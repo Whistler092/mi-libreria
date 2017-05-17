@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f = "http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Books Store</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+
+    </h:head>
+    <h:body>
+        <div class="container">
+            <h1>Mi Inventario de Libros</h1>
+            <br></br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h:form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputisbn" class="col-sm-2 control-label">Codigo ISBN</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="inputisbn" value="#{controladorBooks.selectedBook.isbn}" class="form-control" a:placeholder="ISBN" required="true" label="ISBN" ></h:inputText>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputname" class="col-sm-2 control-label">Titulo Libro</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="inputname" value="#{controladorBooks.selectedBook.name}" class="form-control" a:placeholder="Titulo" required="true" label="Titulo" ></h:inputText>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputauthor" class="col-sm-2 control-label">Autor</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="inputauthor" value="#{controladorBooks.selectedBook.author}" class="form-control"  a:placeholder="Autor" required="true" label="Autor" ></h:inputText>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputpublisher" class="col-sm-2 control-label">Editorial</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="inputpublisher" value="#{controladorBooks.selectedBook.publisher}" class="form-control"  a:placeholder="Editorial" required="true" label="Editorial" ></h:inputText>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputyear" class="col-sm-2 control-label">Año</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="inputyear" value="#{controladorBooks.selectedBook.year}" class="form-control"  a:placeholder="Año" required="true" label="Año" ></h:inputText>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPrecio" class="col-sm-2 control-label">Precio</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="inputPrecio" value="#{controladorBooks.selectedBook.price}" class="form-control"  a:placeholder="Precio del producto" required="true" label="Precio" ></h:inputText>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3 col-md-offset-2">
+                                <h:commandButton value="#{controladorBooks.obtenerNombre()}" class="btn btn-default" action="#{controladorBooks.createBook()}"></h:commandButton>
+                            </div>
+                            <div class="col-md-3 col-md-offset-2" >
+                                <h:commandButton  rendered="#{controladorBooks.obtenerNombre() eq 'Editar'}" value="Desactivar" class="btn btn-default" action="#{controladorBooks.disableBook()}"></h:commandButton>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+
+                <div class="col-xs-6">
+
+                    <h:form>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <h:inputText id="inputFrom" value="#{controladorBooks.filterFrom}" class="form-control"  a:placeholder="Desde"  label="Desde" ></h:inputText>
+                            </div>
+                            <div class="form-group">
+                                <h:inputText id="inputTo" value="#{controladorBooks.filterTo}" class="form-control"  a:placeholder="Hasta"  label="Hasta" ></h:inputText>
+                            </div>
+                            <h:commandButton value="Filtrar x Años" class="btn btn-default" action="#{controladorBooks.filterByYears()}"></h:commandButton>
+                            <h:commandButton value="Filtrar x Precios" class="btn btn-default" action="#{controladorBooks.filterByPrice()}"></h:commandButton>
+                            <h:commandButton value="Cargar Todos" class="btn btn-default" action="#{controladorBooks.loadBooks()}"></h:commandButton>
+                        </div>
+                        <br></br>
+                        <ui:repeat value="#{controladorBooks.listaLibros}" var="item">
+                            <div class="list-group">
+                                <!--<a href="#" class="list-group-item">-->
+                                <h:commandLink action="#{controladorBooks.editBook(item)}"  class="list-group-item">
+                                    <h4 class="list-group-item-heading">(#{item.year}) #{item.name} - ISBN: #{item.isbn}</h4>
+                                    <p class="list-group-item-text">Autor: #{item.author}</p>
+                                    <p class="list-group-item-text">Publicado Por: #{item.publisher}</p>
+                                    <p class="list-group-item-text">Precio: 
+                                        <h:outputText value="#{item.price}">
+                                            <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" />
+
+                                        </h:outputText>
+                                    </p>
+                                </h:commandLink>
+                                <!--</a>-->
+                            </div>
+                        </ui:repeat>   
+                    </h:form>
+
+                </div>
+            </div>
+
+        </div>
+    </h:body>
+
+</html>
+
